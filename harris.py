@@ -1,7 +1,7 @@
 from PIL import Image
 from numpy import *
 from pylab import *
-
+import time
 from scipy.ndimage import filters
 
 def compute_harris_response(im,sigma=3):
@@ -109,6 +109,7 @@ normalized cross correlation. """
     # pair-wise distances
     d = -ones((len(desc1),len(desc2)))
     for i in range(len(desc1)):
+        print i, "of ", len(desc1)
         for j in range(len(desc2)):
             d1 = (desc1[i] - mean(desc1[i])) / std(desc1[i])
             d2 = (desc2[j] - mean(desc2[j])) / std(desc2[j])
@@ -135,7 +136,10 @@ def appendimages(im1,im2):
 def match_twosided(desc1,desc2,threshold=0.5):
     """ Two-sided symmetric version of match(). """
     print 'first part'
+    t=time.time()
     matches_12 = match(desc1,desc2,threshold)
+    print "matches_12 time=", time.time()-t
+    
     print 'second part'
     matches_21 = match(desc2,desc1,threshold)
     print 'ndx_12'
